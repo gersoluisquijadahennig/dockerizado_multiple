@@ -124,7 +124,7 @@ FROM production AS development
 ARG XDEBUG_ENABLED=true
 ARG XDEBUG_MODE=develop,coverage,debug,profile
 ARG XDEBUG_HOST=host.docker.internal
-ARG XDEBUG_IDE_KEY=DOCKER
+ARG XDEBUG_IDE_KEY
 ARG XDEBUG_LOG=/dev/stdout
 ARG XDEBUG_LOG_LEVEL=0
 
