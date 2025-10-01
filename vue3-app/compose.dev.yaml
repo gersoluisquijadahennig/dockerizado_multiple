@@ -1,0 +1,26 @@
+services:
+  workspace-vue:
+    build:
+      context: .
+      dockerfile: ./docker/development/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        NODE_VERSION: ${NODE_VERSION:-22.0.0}
+    ports:
+      - '${VITE_PORT:-5173}:5173'
+    tty: true
+    stdin_open: true
+    env_file:
+      - .env
+    volumes:
+      # Mount the application code to the workspace home
+      - ./:/var/www
+    networks:
+      - default
+    working_dir: /var/www
+
+networks:
+  default:
+    external: true
+    name: dokerizado_vue3-development

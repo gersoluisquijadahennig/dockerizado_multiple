@@ -1,0 +1,35 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/production/nginx/Dockerfile
+    restart: unless-stopped
+    volumes:
+      # Mount the built assets as read-only
+      - vue3-dist:/usr/share/nginx/html:ro
+    networks:
+      - vue3-production
+    ports:
+      - "${NGINX_PORT:-8080}:80"
+    depends_on:
+      build:
+        condition: service_completed_successfully
+
+  build:
+    build:
+      context: .
+      dockerfile: ./docker/production/Dockerfile
+      target: builder
+    volumes:
+      # Mount the dist volume to receive the built assets
+      - vue3-dist:/app/dist
+    networks:
+      - vue3-production
+    # This service exits after building, it doesn't run continuously
+    command: npm run build
+
+networks:
+  vue3-production:
+
+volumes:
+  vue3-dist:
